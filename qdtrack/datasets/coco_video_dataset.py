@@ -35,6 +35,7 @@ class CocoVideoDataset(CocoDataset):
             data_infos = super().load_annotations(ann_file)
         else:
             data_infos = self.load_video_anns(ann_file)
+
         return data_infos
 
     def load_video_anns(self, ann_file):
@@ -53,6 +54,7 @@ class CocoVideoDataset(CocoDataset):
                 info = self.coco.load_imgs([img_id])[0]
                 info['filename'] = info['file_name']
                 data_infos.append(info)
+
         return data_infos
 
     def key_img_sampling(self, img_ids, interval=1):
@@ -79,6 +81,7 @@ class CocoVideoDataset(CocoDataset):
                 ref_img_id = random.choice(valid_inds)
             ref_img_info = self.coco.loadImgs([ref_img_id])[0]
             ref_img_info['filename'] = ref_img_info['file_name']
+ 
         return ref_img_info
 
     def _pre_pipeline(self, _results):
@@ -115,6 +118,7 @@ class CocoVideoDataset(CocoDataset):
         if self.proposals is not None:
             idx = self.img_ids.index(img_info['id'])
             results['proposals'] = self.proposals[idx]
+ 
         return results
 
     def match_results(self, results, ref_results):
@@ -122,6 +126,7 @@ class CocoVideoDataset(CocoDataset):
             results['ann_info'], ref_results['ann_info'])
         results['ann_info']['match_indices'] = match_indices
         ref_results['ann_info']['match_indices'] = ref_match_indices
+
         return results, ref_results
 
     def _match_gts(self, ann, ref_ann):
@@ -138,6 +143,7 @@ class CocoVideoDataset(CocoDataset):
         else:
             match_indices = np.arange(ann['bboxes'].shape[0], dtype=np.int64)
             ref_match_indices = match_indices.copy()
+
         return match_indices, ref_match_indices
 
     def prepare_train_img(self, idx):
@@ -269,8 +275,8 @@ class CocoVideoDataset(CocoDataset):
                 logger=logger,
                 classwise=classwise,
                 proposal_nums=proposal_nums,
-                iou_thrs=iou_thr,
-                metric_items=metric_items)
+                iou_thrs=iou_thr)
+                #metric_items=metric_items)
             eval_results.update(super_eval_results)
 
         if 'track' in metrics:

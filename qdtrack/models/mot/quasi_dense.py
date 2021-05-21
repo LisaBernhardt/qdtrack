@@ -76,6 +76,7 @@ class QuasiDenseFasterRCNN(TwoStageDetector):
         det_bboxes, det_labels, track_feats = self.roi_head.simple_test(
             x, img_metas, proposal_list, rescale)
 
+        #det_labels.cuda()
         if track_feats is not None:
             bboxes, labels, ids = self.tracker.match(
                 bboxes=det_bboxes,

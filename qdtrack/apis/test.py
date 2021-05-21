@@ -16,6 +16,7 @@ def single_gpu_test(model,
                     out_dir=None,
                     show_score_thr=0.3):
     model.eval()
+    #print(model)
     results = defaultdict(list)
     dataset = data_loader.dataset
     prog_bar = mmcv.ProgressBar(len(dataset))

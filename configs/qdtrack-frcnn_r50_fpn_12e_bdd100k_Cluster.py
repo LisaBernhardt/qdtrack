@@ -1,19 +1,19 @@
 # model settings
 model = dict(
     type='QuasiDenseFasterRCNN',
-    pretrained='torchvision://resnet50',
+    pretrained='torchvision://resnet34',
     backbone=dict(
         type='ResNet',
-        depth=50,
+        depth=34,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
-        frozen_stages=1,
+        frozen_stages=0,
         norm_cfg=dict(type='BN', requires_grad=True),
         norm_eval=True,
         style='pytorch'),
     neck=dict(
         type='FPN',
-        in_channels=[256, 512, 1024, 2048],
+        in_channels=[64, 128, 256, 512],
         out_channels=256,
         num_outs=5),
     rpn_head=dict(
@@ -228,7 +228,7 @@ data = dict(
         img_prefix=data_root + 'tracking/images/val/',
         pipeline=test_pipeline))
 # optimizer
-optimizer = dict(type='SGD', lr=0.04, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
 # learning policy
 lr_config = dict(
